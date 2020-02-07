@@ -1,0 +1,50 @@
+create table Tutor(id_tutor int primary key not null, nombre varchar(50) not null,ap_paterno varchar(50) not null,ap_materno varchar(50) not null,direccion varchar(250) not null, sexo varchar(2) not null,tel_casa varchar(15),tel_celular varchar(15));
+
+create table Alumno( Curp varchar(20) primary key not null, nombre varchar(50) not null, ap_paterno varchar(50) not null, ap_materno varchar(50) not null, sexo varchar(2) not null,direccion varchar(250) not null, tel_casa varchar(15), tel_celular varchar(15),id_tutor int);
+
+create table Profesor( RFC varchar(20) primary key not null, nombre varchar(50) not null,ap_paterno varchar(50) not null,ap_materno varchar(50) not null, sexo varchar(2) not null, telefono varchar(15), direccion varchar(250) not null, cedula_prof varchar(25) not null, curp varchar(20), grupo int);
+
+
+create table Direccion( id_personal varchar(20) primary key not null,nombre varchar(50) not null,ap_paterno varchar(50) not null, ap_materno varchar(50) not null, cedula_prof varchar(25) not null, direccion varchar(250) not null, sexo varchar(2) not null,puesto varchar(20) not null);
+
+create table GrupoyGrado( id_gyg int not null primary key,GradoyGrupo varchar(3) not null);
+
+create table Reporte(No_reporte int not null primary key,grado int not null,tipo int not null, frecuencia int not null);
+
+create table Grado(idgrado int not null primary key, nombre varchar(20) not null);
+
+create table Tipo(idtipo int not null primary key, nombre varchar(20) not null);
+
+create table Frecuencia(idfrecuencia int not null primary key, nombre varchar(20) not null);
+
+create table AlumReporte(id_AlmRep int not null primary key, Curp varchar(20),  No_Reporte int);
+
+create table ProfeReporte(id_ProfRep int not null primary key, RFC varchar(20),  No_Reporte int);
+
+create table DirecReporte(id_DirecRep int not null primary key, id_personal varchar(20),  No_Reporte int);
+
+
+alter table Reporte add foreign key(grado) references Grado(idgrado) on delete cascade on update cascade;
+
+alter table Reporte add foreign key(tipo) references Tipo(idtipo) on delete cascade on update cascade;
+
+alter table Reporte add foreign key(frecuencia) references Frecuencia(idfrecuencia) on delete cascade on update cascade;
+
+alter table Alumno add foreign key(id_tutor) references Tutor(id_tutor) on delete cascade on update cascade;
+
+alter table Direccion add foreign key(puesto) references Profesor(RFC) on delete cascade on update cascade;
+
+alter table Profesor add foreign key(grupo) references GrupoyGrado(id_gyg) on delete cascade on update cascade;
+
+alter table AlumReporte add foreign key(Curp) references Alumno(Curp) on delete cascade on update cascade;
+
+alter table AlumReporte add foreign key(No_Reporte) references Reporte(No_Reporte) on delete cascade on update cascade;
+
+alter table ProfeReporte add foreign key(RFC) references Profesor(RFC) on delete cascade on update cascade;
+
+alter table ProfeReporte add foreign key(No_Reporte) references Reporte(No_Reporte) on delete cascade on update cascade;
+
+alter table DirecReporte add foreign key(id_personal) references Direccion(id_personal) on delete cascade on update cascade;
+
+alter table DirecReporte add foreign key(No_Reporte) references Reporte(No_Reporte) on delete cascade on update cascade;
+
